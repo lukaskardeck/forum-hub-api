@@ -30,4 +30,10 @@ public class Topic {
     private LocalDateTime creationDate = LocalDateTime.now();
 
     private String status;
+
+    public Topic(CreateTopicRequest createTopic) {
+        this.title = createTopic.title();
+        this.message = createTopic.message();
+        this.course = createTopic.course();
+    }
 }
