@@ -1,5 +1,6 @@
 package com.lukaskardeck.forum_hub.domain.topic;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public class TopicService {
     }
 
 
-    public Page<TopicDetailsResponse> listTopics(String course, Integer year, Pageable pageable) {
+    public Page<TopicDetailsResponse> list(String course, Integer year, Pageable pageable) {
         Page<Topic> topics;
         if (course != null && year != null) {
             topics = topicRepository.findByCourseAndYear(course, year, pageable);
@@ -46,17 +47,24 @@ public class TopicService {
     }
 
 
-    public TopicDetailsResponse detailTopics(Long id) {
+    public TopicDetailsResponse detail(Long id) {
         var topic = topicRepository.getReferenceById(id);
         return new TopicDetailsResponse(topic);
     }
 
 
-    public TopicDetailsResponse updateTopic(UpdateTopicRequest data) {
+    public TopicDetailsResponse update(UpdateTopicRequest data) {
         var topic = topicRepository.getReferenceById(data.id());
         topic.update(data);
         topicRepository.flush(); // força o JPA a sincronizar as alterações com o banco
 
         return new TopicDetailsResponse(topic);
+    }
+
+
+    public void delete(Long id) {
+        topicRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("ID não encontrado: " + id));
+        topicRepository.deleteById(id);
     }
 }

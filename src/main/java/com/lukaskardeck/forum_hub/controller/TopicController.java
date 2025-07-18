@@ -60,7 +60,7 @@ public class TopicController {
             Pageable pageable
     ) {
 
-        var response = topicService.listTopics(course, year, pageable);
+        var response = topicService.list(course, year, pageable);
         return ResponseEntity.ok(response);
     }
 
@@ -70,7 +70,7 @@ public class TopicController {
      * */
     @GetMapping("/{id}")
     public ResponseEntity detail(@PathVariable Long id) {
-        var topic = topicService.detailTopics(id);
+        var topic = topicService.detail(id);
         return ResponseEntity.ok(topic);
     }
 
@@ -81,8 +81,19 @@ public class TopicController {
     @PutMapping
     @Transactional
     public ResponseEntity update(@RequestBody UpdateTopicRequest request) {
-        var topic = topicService.updateTopic(request);
+        var topic = topicService.update(request);
         return ResponseEntity.ok(topic);
+    }
+
+
+    /*
+     *  DELETAR UM TÓPICO
+     * */
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity delete(@PathVariable Long id) {
+        topicService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
