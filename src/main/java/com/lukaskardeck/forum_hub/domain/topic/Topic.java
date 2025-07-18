@@ -27,7 +27,10 @@ public class Topic {
     private String course;
 
     @Column(name = "creation_date")
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDateTime creationDate;
+
+    @Column(name = "last_updated")
+    private LocalDateTime lastUpdated;
 
     private String status;
 
@@ -35,5 +38,30 @@ public class Topic {
         this.title = createTopic.title();
         this.message = createTopic.message();
         this.course = createTopic.course();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.creationDate = LocalDateTime.now();
+        this.lastUpdated = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdated = LocalDateTime.now();
+    }
+
+    public void update(UpdateTopicRequest data) {
+        if (data.title() != null) {
+            this.title = data.title();
+        }
+
+        if (data.message() != null) {
+            this.message = data.message();
+        }
+
+        if (data.course() != null) {
+            this.course = data.course();
+        }
     }
 }

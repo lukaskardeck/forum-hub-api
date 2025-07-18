@@ -50,4 +50,13 @@ public class TopicService {
         var topic = topicRepository.getReferenceById(id);
         return new TopicDetailsResponse(topic);
     }
+
+
+    public TopicDetailsResponse updateTopic(UpdateTopicRequest data) {
+        var topic = topicRepository.getReferenceById(data.id());
+        topic.update(data);
+        topicRepository.flush(); // força o JPA a sincronizar as alterações com o banco
+
+        return new TopicDetailsResponse(topic);
+    }
 }

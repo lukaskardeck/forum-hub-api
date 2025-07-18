@@ -3,6 +3,7 @@ package com.lukaskardeck.forum_hub.controller;
 import com.lukaskardeck.forum_hub.domain.topic.CreateTopicRequest;
 import com.lukaskardeck.forum_hub.domain.topic.TopicDetailsResponse;
 import com.lukaskardeck.forum_hub.domain.topic.TopicService;
+import com.lukaskardeck.forum_hub.domain.topic.UpdateTopicRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,7 +49,7 @@ public class TopicController {
      *  LISTA OS TÓPICOS COM O RECURSO DE PAGINAÇÃO
      * */
     @GetMapping
-    public ResponseEntity<Page<TopicDetailsResponse>> listTopics(
+    public ResponseEntity<Page<TopicDetailsResponse>> list(
             @RequestParam(required = false)
             String course,
 
@@ -68,8 +69,20 @@ public class TopicController {
      *  DETALHANDO UM TÓPICO ESPECÍFICO, PELO ID
      * */
     @GetMapping("/{id}")
-    public ResponseEntity detailTopic(@PathVariable Long id) {
+    public ResponseEntity detail(@PathVariable Long id) {
         var topic = topicService.detailTopics(id);
         return ResponseEntity.ok(topic);
     }
+
+
+    /*
+     *  ATUALIZA UM TÓPICO
+     * */
+    @PutMapping
+    @Transactional
+    public ResponseEntity update(@RequestBody UpdateTopicRequest request) {
+        var topic = topicService.updateTopic(request);
+        return ResponseEntity.ok(topic);
+    }
+
 }

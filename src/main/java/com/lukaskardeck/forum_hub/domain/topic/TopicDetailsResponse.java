@@ -7,7 +7,8 @@ public record TopicDetailsResponse(
         String title,
         String message,
         String course,
-        LocalDateTime creationDate
+        LocalDateTime creationDate,
+        LocalDateTime lastUpdate
 ) {
 
     public TopicDetailsResponse(Topic topic) {
@@ -16,7 +17,8 @@ public record TopicDetailsResponse(
                 topic.getTitle(),
                 topic.getMessage(),
                 topic.getCourse(),
-                topic.getCreationDate()
+                topic.getCreationDate(),
+                topic.getLastUpdated()
         );
     }
 }
