@@ -1,6 +1,8 @@
 package com.lukaskardeck.forum_hub.domain.topic;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,5 +25,22 @@ public class TopicService {
         topicRepository.save(newTopic);
 
         return new TopicDetailsResponse(newTopic);
+    }
+
+
+    public Page<TopicDetailsResponse> listTopics(String course, Integer year, Pageable pageable) {
+        Page<Topic> topics;
+        if (course != null && year != null) {
+            topics = topicRepository.findByCourseAndYear(course, year, pageable);
+        } else if (course != null) {
+            topics = topicRepository.findByCourse(course, pageable);
+        } else if (year != null) {
+            topics = topicRepository.findByYear(year, pageable);
+        } else {
+            topics = topicRepository.findAll(pageable);
+        }
+
+        // Transforma cada tópico da lista (Page) em um TopicDetailsResponse, e retorna essa lista
+        return topics.map(TopicDetailsResponse::new);
     }
 }
