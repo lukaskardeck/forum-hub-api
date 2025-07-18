@@ -11,6 +11,7 @@ public class TopicService {
     @Autowired
     private TopicRepository topicRepository;
 
+
     public TopicDetailsResponse create(CreateTopicRequest topicRequest) {
         var title = topicRequest.title();
         var message = topicRequest.message();
@@ -42,5 +43,11 @@ public class TopicService {
 
         // Transforma cada tópico da lista (Page) em um TopicDetailsResponse, e retorna essa lista
         return topics.map(TopicDetailsResponse::new);
+    }
+
+
+    public TopicDetailsResponse detailTopics(Long id) {
+        var topic = topicRepository.getReferenceById(id);
+        return new TopicDetailsResponse(topic);
     }
 }

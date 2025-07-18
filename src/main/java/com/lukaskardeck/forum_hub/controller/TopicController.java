@@ -63,4 +63,13 @@ public class TopicController {
         return ResponseEntity.ok(response);
     }
 
+
+    /*
+     *  DETALHANDO UM TÓPICO ESPECÍFICO, PELO ID
+     * */
+    @GetMapping("/{id}")
+    public ResponseEntity detailTopic(@PathVariable Long id) {
+        var topic = topicService.detailTopics(id);
+        return ResponseEntity.ok(topic);
+    }
 }
