@@ -1,6 +1,9 @@
 package com.lukaskardeck.forum_hub.controller;
 
 import com.lukaskardeck.forum_hub.domain.auth.LoginUserRequest;
+import com.lukaskardeck.forum_hub.domain.user.User;
+import com.lukaskardeck.forum_hub.infra.security.TokenResponse;
+import com.lukaskardeck.forum_hub.infra.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +21,22 @@ public class AuthController {
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginUserRequest loginReq) {
-        var token = new UsernamePasswordAuthenticationToken(loginReq.login(), loginReq.password());
-        var authentication = manager.authenticate(token);
+    public ResponseEntity login(@RequestBody @Valid LoginUserRequest loginReq) {
+
+        // 1. Cria token de autenticação com email/senha
+        var authToken = new UsernamePasswordAuthenticationToken(loginReq.login(), loginReq.password());
+
+        // 2. Autentica o usuário
+        var authentication = manager.authenticate(authToken);
+
+        // 3. Gera o token JWT
+        var token = tokenService.generateToken((User) authentication.getPrincipal());
 
         // Aqui você pode gerar um token JWT se quiser implementar
-        return ResponseEntity.ok("Autenticado com sucesso!");
+        return ResponseEntity.ok(new TokenResponse(token));
     }
 }
