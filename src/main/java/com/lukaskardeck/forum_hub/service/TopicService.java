@@ -1,5 +1,10 @@
-package com.lukaskardeck.forum_hub.domain.topic;
+package com.lukaskardeck.forum_hub.service;
 
+import com.lukaskardeck.forum_hub.domain.Topic;
+import com.lukaskardeck.forum_hub.dto.UpdateTopicRequest;
+import com.lukaskardeck.forum_hub.dto.CreateTopicRequest;
+import com.lukaskardeck.forum_hub.dto.TopicDetailsResponse;
+import com.lukaskardeck.forum_hub.repository.TopicRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

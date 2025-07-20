@@ -1,4 +1,6 @@
-package com.lukaskardeck.forum_hub.domain.topic;
+package com.lukaskardeck.forum_hub.dto;
+
+import com.lukaskardeck.forum_hub.domain.Topic;
 
 import java.time.LocalDateTime;
 

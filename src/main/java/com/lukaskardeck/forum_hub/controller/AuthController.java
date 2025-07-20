@@ -1,9 +1,9 @@
 package com.lukaskardeck.forum_hub.controller;
 
-import com.lukaskardeck.forum_hub.domain.auth.LoginUserRequest;
-import com.lukaskardeck.forum_hub.domain.user.User;
-import com.lukaskardeck.forum_hub.infra.security.TokenResponse;
-import com.lukaskardeck.forum_hub.infra.security.TokenService;
+import com.lukaskardeck.forum_hub.dto.LoginUserRequest;
+import com.lukaskardeck.forum_hub.domain.User;
+import com.lukaskardeck.forum_hub.dto.TokenResponse;
+import com.lukaskardeck.forum_hub.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

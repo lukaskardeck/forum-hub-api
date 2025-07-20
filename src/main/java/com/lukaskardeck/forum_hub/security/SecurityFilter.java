@@ -1,6 +1,7 @@
-package com.lukaskardeck.forum_hub.infra.security;
+package com.lukaskardeck.forum_hub.security;
 
-import com.lukaskardeck.forum_hub.domain.user.UserRepository;
+import com.lukaskardeck.forum_hub.repository.UserRepository;
+import com.lukaskardeck.forum_hub.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

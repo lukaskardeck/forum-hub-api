@@ -1,4 +1,4 @@
-package com.lukaskardeck.forum_hub.domain.topic;
+package com.lukaskardeck.forum_hub.dto;
 
 import jakarta.validation.constraints.NotNull;
 

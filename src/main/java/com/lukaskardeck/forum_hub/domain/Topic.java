@@ -1,5 +1,7 @@
-package com.lukaskardeck.forum_hub.domain.topic;
+package com.lukaskardeck.forum_hub.domain;
 
+import com.lukaskardeck.forum_hub.dto.CreateTopicRequest;
+import com.lukaskardeck.forum_hub.dto.UpdateTopicRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

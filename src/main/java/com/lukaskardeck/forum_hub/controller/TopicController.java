@@ -1,9 +1,9 @@
 package com.lukaskardeck.forum_hub.controller;
 
-import com.lukaskardeck.forum_hub.domain.topic.CreateTopicRequest;
-import com.lukaskardeck.forum_hub.domain.topic.TopicDetailsResponse;
-import com.lukaskardeck.forum_hub.domain.topic.TopicService;
-import com.lukaskardeck.forum_hub.domain.topic.UpdateTopicRequest;
+import com.lukaskardeck.forum_hub.dto.CreateTopicRequest;
+import com.lukaskardeck.forum_hub.dto.TopicDetailsResponse;
+import com.lukaskardeck.forum_hub.service.TopicService;
+import com.lukaskardeck.forum_hub.dto.UpdateTopicRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

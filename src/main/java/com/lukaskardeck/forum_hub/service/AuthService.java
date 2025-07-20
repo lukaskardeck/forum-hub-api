@@ -1,6 +1,6 @@
-package com.lukaskardeck.forum_hub.domain.auth;
+package com.lukaskardeck.forum_hub.service;
 
-import com.lukaskardeck.forum_hub.domain.user.UserRepository;
+import com.lukaskardeck.forum_hub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

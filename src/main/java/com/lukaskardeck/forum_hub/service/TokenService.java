@@ -1,10 +1,10 @@
-package com.lukaskardeck.forum_hub.infra.security;
+package com.lukaskardeck.forum_hub.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.lukaskardeck.forum_hub.domain.user.User;
+import com.lukaskardeck.forum_hub.domain.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

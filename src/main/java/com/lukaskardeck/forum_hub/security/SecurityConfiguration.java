@@ -1,4 +1,4 @@
-package com.lukaskardeck.forum_hub.infra.security;
+package com.lukaskardeck.forum_hub.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

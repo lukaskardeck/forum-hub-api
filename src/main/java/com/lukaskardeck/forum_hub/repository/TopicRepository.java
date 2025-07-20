@@ -1,5 +1,6 @@
-package com.lukaskardeck.forum_hub.domain.topic;
+package com.lukaskardeck.forum_hub.repository;
 
+import com.lukaskardeck.forum_hub.domain.Topic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

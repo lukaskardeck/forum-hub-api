@@ -1,4 +1,4 @@
-package com.lukaskardeck.forum_hub.domain.user;
+package com.lukaskardeck.forum_hub.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

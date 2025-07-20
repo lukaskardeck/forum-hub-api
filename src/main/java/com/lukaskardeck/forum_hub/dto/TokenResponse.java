@@ -1,4 +1,4 @@
-package com.lukaskardeck.forum_hub.infra.security;
+package com.lukaskardeck.forum_hub.dto;
 
 public record TokenResponse(
         String token
