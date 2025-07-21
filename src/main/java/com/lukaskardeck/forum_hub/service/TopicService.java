@@ -53,13 +53,19 @@ public class TopicService {
 
 
     public TopicDetailsResponse detail(Long id) {
-        var topic = topicRepository.getReferenceById(id);
+        var topic = topicRepository.findById(id)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Tópico com ID " + id + " não encontrado")
+                );
         return new TopicDetailsResponse(topic);
     }
 
 
     public TopicDetailsResponse update(UpdateTopicRequest data) {
-        var topic = topicRepository.getReferenceById(data.id());
+        var topic = topicRepository.findById(data.id())
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Tópico com ID " + data.id() + " não encontrado")
+                );
         topic.update(data);
         topicRepository.flush(); // força o JPA a sincronizar as alterações com o banco
 
@@ -69,7 +75,7 @@ public class TopicService {
 
     public void delete(Long id) {
         topicRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("ID não encontrado: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Tópico com ID " + id + " não encontrado"));
         topicRepository.deleteById(id);
     }
 }
