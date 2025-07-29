@@ -1,7 +1,7 @@
 package com.lukaskardeck.forum_hub.domain;
 
-import com.lukaskardeck.forum_hub.dto.CreateTopicRequest;
-import com.lukaskardeck.forum_hub.dto.UpdateTopicRequest;
+import com.lukaskardeck.forum_hub.dto.topic.CreateTopicRequest;
+import com.lukaskardeck.forum_hub.dto.topic.UpdateTopicRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

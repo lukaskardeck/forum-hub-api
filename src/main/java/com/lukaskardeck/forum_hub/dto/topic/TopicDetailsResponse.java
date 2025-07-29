@@ -1,4 +1,4 @@
-package com.lukaskardeck.forum_hub.dto;
+package com.lukaskardeck.forum_hub.dto.topic;
 
 import com.lukaskardeck.forum_hub.domain.Topic;
 
