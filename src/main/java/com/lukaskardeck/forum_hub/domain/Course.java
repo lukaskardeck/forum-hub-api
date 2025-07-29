@@ -1,6 +1,7 @@
 package com.lukaskardeck.forum_hub.domain;
 
-import com.lukaskardeck.forum_hub.dto.CourseDTO;
+import com.lukaskardeck.forum_hub.dto.course.CreateCourseRequest;
+import com.lukaskardeck.forum_hub.dto.course.UpdateCourseRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -39,7 +40,7 @@ public class Course {
     @Column(name = "updated_at")
     private LocalDateTime lastUpdated;
 
-    public Course(CourseDTO.CreateCourseRequest createCourse) {
+    public Course(CreateCourseRequest createCourse) {
         this.name = createCourse.name();
         this.category = createCourse.category();
     }
@@ -53,5 +54,10 @@ public class Course {
     @PreUpdate
     public void preUpdate() {
         this.lastUpdated = LocalDateTime.now();
+    }
+
+    public void update(UpdateCourseRequest data) {
+        if (data.name() != null) this.name = data.name();
+        if (data.category() != null) this.category = data.category();
     }
 }
