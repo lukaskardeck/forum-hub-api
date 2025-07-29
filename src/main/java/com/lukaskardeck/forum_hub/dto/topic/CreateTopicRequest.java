@@ -1,6 +1,7 @@
 package com.lukaskardeck.forum_hub.dto.topic;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record CreateTopicRequest(
         @NotBlank
@@ -9,7 +10,7 @@ public record CreateTopicRequest(
         @NotBlank
         String message,
 
-        @NotBlank
-        String course
+        @NotNull
+        Long courseId
 ) {
 }

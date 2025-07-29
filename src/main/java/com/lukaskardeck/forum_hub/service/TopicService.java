@@ -1,9 +1,11 @@
 package com.lukaskardeck.forum_hub.service;
 
+import com.lukaskardeck.forum_hub.domain.Course;
 import com.lukaskardeck.forum_hub.domain.Topic;
 import com.lukaskardeck.forum_hub.dto.topic.UpdateTopicRequest;
 import com.lukaskardeck.forum_hub.dto.topic.CreateTopicRequest;
 import com.lukaskardeck.forum_hub.dto.topic.TopicDetailsResponse;
+import com.lukaskardeck.forum_hub.repository.CourseRepository;
 import com.lukaskardeck.forum_hub.repository.TopicRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class TopicService {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
 
     public TopicDetailsResponse create(CreateTopicRequest topicRequest) {
         var title = topicRequest.title();
@@ -28,7 +33,10 @@ public class TopicService {
             throw new IllegalArgumentException("Já existe um tópico registrado com esse título e mensagem!");
         }
 
-        var newTopic = new Topic(topicRequest);
+        var course = courseRepository.findById(topicRequest.courseId())
+                .orElseThrow(() -> new EntityNotFoundException("Curso com ID " + topicRequest.courseId() + " não encontrado"));
+
+        var newTopic = new Topic(topicRequest, course);
         topicRepository.save(newTopic);
 
         return new TopicDetailsResponse(newTopic);
@@ -38,18 +46,18 @@ public class TopicService {
     public Page<TopicDetailsResponse> list(String course, Integer year, Pageable pageable) {
         Page<Topic> topics;
         if (course != null && year != null) {
-            topics = topicRepository.findByCourseAndYear(course, year, pageable);
+            topics = topicRepository.findByCourseNameAndYear(course, year, pageable);
         } else if (course != null) {
-            topics = topicRepository.findByCourse(course, pageable);
+            topics = topicRepository.findByCourse_Name(course, pageable);
         } else if (year != null) {
             topics = topicRepository.findByYear(year, pageable);
         } else {
             topics = topicRepository.findAll(pageable);
         }
 
-        // Transforma cada tópico da lista (Page) em um TopicDetailsResponse, e retorna essa lista
         return topics.map(TopicDetailsResponse::new);
     }
+
 
 
     public TopicDetailsResponse detail(Long id) {
@@ -66,7 +74,15 @@ public class TopicService {
                 .orElseThrow(
                         () -> new EntityNotFoundException("Tópico com ID " + data.id() + " não encontrado")
                 );
-        topic.update(data);
+
+        Course course = null;
+        if (data.courseId() != null) {
+            course = courseRepository.findById(data.courseId())
+                    .orElseThrow(() -> new EntityNotFoundException("Curso com ID " + data.courseId() + " não encontrado"));
+        }
+
+        topic.update(data, course);
+
         topicRepository.flush(); // força o JPA a sincronizar as alterações com o banco
 
         return new TopicDetailsResponse(topic);

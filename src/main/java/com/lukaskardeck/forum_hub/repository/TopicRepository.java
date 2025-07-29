@@ -11,12 +11,15 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
 
     Boolean existsByTitleAndMessage(String title, String message);
 
-    Page<Topic> findByCourse(String course, Pageable pageable);
+    // Busca por nome do curso (usando relacionamento course.name)
+    Page<Topic> findByCourse_Name(String courseName, Pageable pageable);
 
+    // Busca por ano da data de criação
     @Query("SELECT t FROM Topic t WHERE YEAR(t.creationDate) = :year")
     Page<Topic> findByYear(@Param("year") Integer year, Pageable pageable);
 
-    @Query("SELECT t FROM Topic t WHERE t.course = :course AND YEAR(t.creationDate) = :year")
-    Page<Topic> findByCourseAndYear(@Param("course") String course, @Param("year") Integer year, Pageable pageable);
-
+    // Busca por nome do curso + ano
+    @Query("SELECT t FROM Topic t WHERE t.course.name = :courseName AND YEAR(t.creationDate) = :year")
+    Page<Topic> findByCourseNameAndYear(@Param("courseName") String courseName, @Param("year") Integer year, Pageable pageable);
 }
+

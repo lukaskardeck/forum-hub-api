@@ -18,7 +18,7 @@ public record TopicDetailsResponse(
                 topic.getId(),
                 topic.getTitle(),
                 topic.getMessage(),
-                topic.getCourse(),
+                topic.getCourse().getName(),
                 topic.getCreationDate(),
                 topic.getLastUpdated()
         );

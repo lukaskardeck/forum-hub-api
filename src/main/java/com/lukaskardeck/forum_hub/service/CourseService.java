@@ -36,14 +36,14 @@ public class CourseService {
     // Lista todos os cursos cadastrados
     public Page<CourseDetailsResponse> showCourses(Pageable pageable) {
         var courses = courseRepository.findAll(pageable);
-
         return courses.map(CourseDetailsResponse::new);
     }
 
 
     // Detalha um curso específico
+    @Transactional(readOnly = true)
     public CourseDetailsResponse detailsCourse(Long id) {
-        var course = courseRepository.findById(id).orElseThrow(
+        var course = courseRepository.findByIdWithTopics(id).orElseThrow(
                 () -> new EntityNotFoundException("Curso com ID " + id + " não encontrado")
         );
         return new CourseDetailsResponse(course);

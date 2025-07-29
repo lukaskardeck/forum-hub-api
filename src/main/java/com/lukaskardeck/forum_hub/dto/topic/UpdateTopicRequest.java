@@ -8,6 +8,6 @@ public record UpdateTopicRequest(
 
         String title,
         String message,
-        String course
+        Long courseId
 ) {
 }

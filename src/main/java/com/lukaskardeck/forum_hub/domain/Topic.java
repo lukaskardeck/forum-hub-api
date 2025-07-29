@@ -26,7 +26,10 @@ public class Topic {
     @Column(columnDefinition = "TEXT")
     private String message;
 
-    private String course;
+    // Muitos tópicos podem pertencer a um único curso
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
 
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
@@ -36,10 +39,10 @@ public class Topic {
 
     private String status;
 
-    public Topic(CreateTopicRequest createTopic) {
+    public Topic(CreateTopicRequest createTopic, Course course) {
         this.title = createTopic.title();
         this.message = createTopic.message();
-        this.course = createTopic.course();
+        this.course = course;
     }
 
     @PrePersist
@@ -53,7 +56,7 @@ public class Topic {
         this.lastUpdated = LocalDateTime.now();
     }
 
-    public void update(UpdateTopicRequest data) {
+    public void update(UpdateTopicRequest data, Course course) {
         if (data.title() != null) {
             this.title = data.title();
         }
@@ -62,8 +65,8 @@ public class Topic {
             this.message = data.message();
         }
 
-        if (data.course() != null) {
-            this.course = data.course();
+        if (course != null) {
+            this.course = course;
         }
     }
 }
