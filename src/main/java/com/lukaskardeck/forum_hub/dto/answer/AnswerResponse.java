@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public record AnswerResponse(
         Long id,
         String message,
+        Long authorId,
         LocalDateTime lastUpdated,
         boolean isSolution
 ) {
@@ -14,6 +15,7 @@ public record AnswerResponse(
         this(
                 answer.getId(),
                 answer.getMessage(),
+                answer.getAuthor().getId(),
                 answer.getLastUpdated(),
                 answer.isSolution()
         );

@@ -37,9 +37,14 @@ public class Answer {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
-    public Answer(CreateAnswerRequest answerRequest, Topic topic) {
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    public Answer(CreateAnswerRequest answerRequest, Topic topic, User author) {
         this.message = answerRequest.message();
         this.topic = topic;
+        this.author = author;
     }
 
     public void update(UpdateAnswerRequest updateRequest) {

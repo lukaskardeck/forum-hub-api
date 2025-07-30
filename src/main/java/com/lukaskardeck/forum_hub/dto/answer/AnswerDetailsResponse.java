@@ -10,7 +10,9 @@ public record AnswerDetailsResponse(
         LocalDateTime creationDate,
         LocalDateTime lastUpdated,
         boolean isSolution,
-        Long topicId
+        Long topicId,
+        String author,
+        Long authorId
 ) {
     public AnswerDetailsResponse(Answer answer) {
         this(
@@ -19,7 +21,9 @@ public record AnswerDetailsResponse(
                 answer.getCreationDate(),
                 answer.getLastUpdated(),
                 answer.isSolution(),
-                answer.getTopic().getId()
+                answer.getTopic().getId(),
+                answer.getAuthor().getUsername(),
+                answer.getAuthor().getId()
         );
     }
 }
