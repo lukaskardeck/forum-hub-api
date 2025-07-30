@@ -1,7 +1,9 @@
 package com.lukaskardeck.forum_hub.service;
 
+import com.lukaskardeck.forum_hub.domain.User;
 import com.lukaskardeck.forum_hub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,5 +24,10 @@ public class AuthService implements UserDetailsService {
         }
 
         return user;
+    }
+
+    public User getAuthenticatedUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return (User) userRepository.findByLogin(username);
     }
 }

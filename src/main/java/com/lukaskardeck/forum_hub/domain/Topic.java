@@ -33,6 +33,11 @@ public class Topic {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
+    // Muitos tópicos podem pertencer a um único autor
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "author_id")
+    private User author;
+
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
@@ -44,10 +49,11 @@ public class Topic {
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 
-    public Topic(CreateTopicRequest createTopic, Course course) {
+    public Topic(CreateTopicRequest createTopic, Course course, User author) {
         this.title = createTopic.title();
         this.message = createTopic.message();
         this.course = course;
+        this.author = author;
     }
 
     @PrePersist

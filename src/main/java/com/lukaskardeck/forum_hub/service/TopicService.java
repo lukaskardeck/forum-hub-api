@@ -2,6 +2,7 @@ package com.lukaskardeck.forum_hub.service;
 
 import com.lukaskardeck.forum_hub.domain.Course;
 import com.lukaskardeck.forum_hub.domain.Topic;
+import com.lukaskardeck.forum_hub.domain.User;
 import com.lukaskardeck.forum_hub.dto.topic.UpdateTopicRequest;
 import com.lukaskardeck.forum_hub.dto.topic.CreateTopicRequest;
 import com.lukaskardeck.forum_hub.dto.topic.TopicDetailsResponse;
@@ -11,6 +12,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +24,9 @@ public class TopicService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private AuthService authService;
 
 
     public TopicDetailsResponse create(CreateTopicRequest topicRequest) {
@@ -36,7 +42,11 @@ public class TopicService {
         var course = courseRepository.findById(topicRequest.courseId())
                 .orElseThrow(() -> new EntityNotFoundException("Curso com ID " + topicRequest.courseId() + " não encontrado"));
 
-        var newTopic = new Topic(topicRequest, course);
+
+        var currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        var userAuthor = (User) authService.loadUserByUsername(currentUsername);
+
+        var newTopic = new Topic(topicRequest, course, userAuthor);
         topicRepository.save(newTopic);
 
         return new TopicDetailsResponse(newTopic);
@@ -75,6 +85,11 @@ public class TopicService {
                         () -> new EntityNotFoundException("Tópico com ID " + data.id() + " não encontrado")
                 );
 
+        var currentUser = authService.getAuthenticatedUser();
+        if (!topic.getAuthor().equals(currentUser)) {
+            throw new AccessDeniedException("Você não tem permissão para alterar este tópico.");
+        }
+
         Course course = null;
         if (data.courseId() != null) {
             course = courseRepository.findById(data.courseId())
@@ -82,7 +97,6 @@ public class TopicService {
         }
 
         topic.update(data, course);
-
         topicRepository.flush(); // força o JPA a sincronizar as alterações com o banco
 
         return new TopicDetailsResponse(topic);
@@ -90,8 +104,14 @@ public class TopicService {
 
 
     public void delete(Long id) {
-        topicRepository.findById(id)
+        var topic = topicRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tópico com ID " + id + " não encontrado"));
-        topicRepository.deleteById(id);
+
+        var currentUser = authService.getAuthenticatedUser();
+        if (!topic.getAuthor().equals(currentUser)) {
+            throw new AccessDeniedException("Você não tem permissão para deletar este tópico.");
+        }
+
+        topicRepository.delete(topic);
     }
 }

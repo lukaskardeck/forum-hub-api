@@ -3,6 +3,7 @@ package com.lukaskardeck.forum_hub.exception;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -86,5 +87,19 @@ public class GlobalExceptionHandler {
                         LocalDateTime.now()
                 ));
     }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)  // CÓDIGO 403
+                .body(new ErrorResponse(
+                        HttpStatus.FORBIDDEN.value(),
+                        HttpStatus.FORBIDDEN.name(),
+                        e.getMessage(),
+                        LocalDateTime.now()
+                ));
+    }
+
 
 }
