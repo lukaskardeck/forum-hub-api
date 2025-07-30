@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +40,9 @@ public class Topic {
     private LocalDateTime lastUpdated;
 
     private String status;
+
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Answer> answers = new ArrayList<>();
 
     public Topic(CreateTopicRequest createTopic, Course course) {
         this.title = createTopic.title();
