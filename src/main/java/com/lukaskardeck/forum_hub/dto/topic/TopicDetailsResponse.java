@@ -1,8 +1,10 @@
 package com.lukaskardeck.forum_hub.dto.topic;
 
 import com.lukaskardeck.forum_hub.domain.Topic;
+import com.lukaskardeck.forum_hub.dto.answer.AnswerResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record TopicDetailsResponse(
         Long id,
@@ -10,9 +12,10 @@ public record TopicDetailsResponse(
         String message,
         String course,
         LocalDateTime creationDate,
-        LocalDateTime lastUpdate
+        LocalDateTime lastUpdate,
+        Integer totalAnswers,
+        List<AnswerResponse> answers
 ) {
-
     public TopicDetailsResponse(Topic topic) {
         this(
                 topic.getId(),
@@ -20,7 +23,10 @@ public record TopicDetailsResponse(
                 topic.getMessage(),
                 topic.getCourse().getName(),
                 topic.getCreationDate(),
-                topic.getLastUpdated()
+                topic.getLastUpdated(),
+                topic.getAnswers().size(),
+                topic.getAnswers().stream().map(AnswerResponse::new).toList()
         );
     }
 }
+
