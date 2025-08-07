@@ -53,14 +53,14 @@ public class TopicService {
     }
 
 
-    public Page<TopicDetailsResponse> list(String course, Integer year, Pageable pageable) {
+    public Page<TopicDetailsResponse> list(String course, String authorLogin, Pageable pageable) {
         Page<Topic> topics;
-        if (course != null && year != null) {
-            topics = topicRepository.findByCourseNameAndYear(course, year, pageable);
+        if (course != null && authorLogin != null) {
+            topics = topicRepository.findByCourseAndAuthor(course, authorLogin, pageable);
         } else if (course != null) {
-            topics = topicRepository.findByCourse_Name(course, pageable);
-        } else if (year != null) {
-            topics = topicRepository.findByYear(year, pageable);
+            topics = topicRepository.findByCourse(course, pageable);
+        } else if (authorLogin != null) {
+            topics = topicRepository.findByAuthor(authorLogin, pageable);
         } else {
             topics = topicRepository.findAll(pageable);
         }

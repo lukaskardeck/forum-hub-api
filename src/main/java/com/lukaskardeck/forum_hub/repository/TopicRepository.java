@@ -16,15 +16,19 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     Page<Topic> findAll(Pageable pageable);
 
     @EntityGraph(attributePaths = "answers")
-    Page<Topic> findByCourse_Name(String courseName, Pageable pageable);
+    @Query("SELECT t FROM Topic t WHERE t.course.name = :courseName")
+    Page<Topic> findByCourse(@Param("courseName") String courseName, Pageable pageable);
 
     @EntityGraph(attributePaths = "answers")
-    @Query("SELECT t FROM Topic t WHERE YEAR(t.creationDate) = :year")
-    Page<Topic> findByYear(@Param("year") Integer year, Pageable pageable);
+    @Query("SELECT t FROM Topic t WHERE t.author.login = :login")
+    Page<Topic> findByAuthor(@Param("login") String login, Pageable pageable);
 
     @EntityGraph(attributePaths = "answers")
-    @Query("SELECT t FROM Topic t WHERE t.course.name = :courseName AND YEAR(t.creationDate) = :year")
-    Page<Topic> findByCourseNameAndYear(@Param("courseName") String courseName, @Param("year") Integer year, Pageable pageable);
-
+    @Query("SELECT t FROM Topic t WHERE t.course.name = :courseName AND t.author.login = :login")
+    Page<Topic> findByCourseAndAuthor(
+            @Param("courseName") String courseName,
+            @Param("login") String login,
+            Pageable pageable
+    );
 }
 
