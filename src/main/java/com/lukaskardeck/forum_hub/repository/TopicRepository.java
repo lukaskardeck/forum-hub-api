@@ -20,6 +20,9 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     Page<Topic> findByCourse(@Param("courseName") String courseName, Pageable pageable);
 
     @EntityGraph(attributePaths = "answers")
+    Page<Topic> findByCourseId(Long courseId, Pageable pageable);
+
+    @EntityGraph(attributePaths = "answers")
     @Query("SELECT t FROM Topic t WHERE t.author.login = :login")
     Page<Topic> findByAuthor(@Param("login") String login, Pageable pageable);
 
@@ -30,5 +33,9 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
             @Param("login") String login,
             Pageable pageable
     );
+
+    @EntityGraph(attributePaths = "answers")
+    Page<Topic> findByCourseIdAndAuthor(Long courseId, String authorLogin, Pageable pageable);
+
 }
 

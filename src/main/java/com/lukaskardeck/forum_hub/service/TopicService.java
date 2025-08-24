@@ -53,12 +53,13 @@ public class TopicService {
     }
 
 
-    public Page<TopicDetailsResponse> list(String course, String authorLogin, Pageable pageable) {
+    public Page<TopicDetailsResponse> list(Long courseId, String authorLogin, Pageable pageable) {
         Page<Topic> topics;
-        if (course != null && authorLogin != null) {
-            topics = topicRepository.findByCourseAndAuthor(course, authorLogin, pageable);
-        } else if (course != null) {
-            topics = topicRepository.findByCourse(course, pageable);
+
+        if (courseId != null && authorLogin != null) {
+            topics = topicRepository.findByCourseIdAndAuthor(courseId, authorLogin, pageable);
+        } else if (courseId != null) {
+            topics = topicRepository.findByCourseId(courseId, pageable);
         } else if (authorLogin != null) {
             topics = topicRepository.findByAuthor(authorLogin, pageable);
         } else {
@@ -67,6 +68,7 @@ public class TopicService {
 
         return topics.map(TopicDetailsResponse::new);
     }
+
 
 
 

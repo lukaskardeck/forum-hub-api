@@ -50,11 +50,11 @@ public class TopicController {
      * */
     @GetMapping
     public ResponseEntity<Page<TopicDetailsResponse>> list(
-            @RequestParam(required = false) String course,
+            @RequestParam(required = false) Long courseId,
             @RequestParam(required = false) String authorLogin,
             @PageableDefault(size = 10, sort = "creationDate", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        var response = topicService.list(course, authorLogin, pageable);
+        var response = topicService.list(courseId, authorLogin, pageable);
         return ResponseEntity.ok(response);
     }
 
